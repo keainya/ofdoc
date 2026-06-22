@@ -177,31 +177,20 @@ def convert_md_to_gov_docx(md_content, output_path):
 
 
 if __name__ == '__main__':
-	# 示例 Markdown 文本输入
-	sample_markdown = """---
-落款: 某某市人民政府
-日期: 2026年6月23日
----
-# 关于做好2026年安全生产工作的通知
+	import sys
 
-一、 总体要求
+	if len(sys.argv) < 2:
+		print("用法: python ofdoc.py <输入文件.md>")
+		sys.exit(1)
 
-各部门要切实提高思想认识，坚持人民至上、生命至上，深刻吸取各类事故教训，坚决防范遏制重特大事故发生。
+	input_path = sys.argv[1]
+	if not os.path.isfile(input_path):
+		print(f"错误: 文件不存在 - {input_path}")
+		sys.exit(1)
 
-（一） 强化责任落实
+	with open(input_path, 'r', encoding='utf-8') as f:
+		md_content = f.read()
 
-严格落实地方党政领导责任、部门监管责任和企业主体责任。
-
-1. 压实领导责任。
-
-主要负责人要亲自抓，分管领导具体抓，确保每一项安全工作落到实处。
-
-（1） 定期召开专题会。
-
-每季度至少召开一次安全生产专题会议。
-
-二、 主要任务
-
-深化重点行业领域专项整治，全面排查和消除隐患。
-"""
-	convert_md_to_gov_docx(sample_markdown, "公文示例.docx")
+	# 将输入文件名后缀替换为 .docx 作为输出文件名
+	output_path = os.path.splitext(input_path)[0] + '.docx'
+	convert_md_to_gov_docx(md_content, output_path)
